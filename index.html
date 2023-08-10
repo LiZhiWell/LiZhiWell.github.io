@@ -16,8 +16,9 @@
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-        <a-entity id="arThing" gps-entity-place
-        material='color: red' geometry='primitive: box' scale="10 10 10"></a-entity>
+        <a-entity id="arThing" gps-entity-place>
+            <a-image src="assets\picture.png" scale="4,4,4"></a-image>
+        </a-entity>
     </a-scene>
 
     <script>
