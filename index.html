@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>AR.js A-Frame Location-based</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <!--基于地理位置的AR渲染-->
-    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    <script type='text/javascript'
+        src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
     <!--A-Frame交互-->
-    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+    <script type='text/javascript'
+        src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
 </head>
+
 <body>
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-        <a-camera gps-camera="gpsMinDistance: 5"></a-camera>
-        <a-entity id="arImage" gps-entity-place>
-            <a-image src="assets\picture.png" scale="2 2 2"></a-image>
-        </a-entity>
+    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+        renderer='antialias: true; alpha: true'>
+        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+        <a-entity id="arThing" gps-entity-place
+        material='color: red' geometry='primitive: box' scale="10 10 10"></a-entity>
     </a-scene>
 
     <script>
         // 获取用户当前位置
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function(position)
+        {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
 
             // 更新图像实体位置
-            var arImage = document.getElementById('arImage');
-            arImage.setAttribute('gps-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
-        });
+            var arThing = document.getElementById('arThing');
+            arThing.setAttribute('gps-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+        })
     </script>
+
+
+
 </body>
+
 </html>
-
-
-
-
-
-
