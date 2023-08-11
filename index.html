@@ -10,6 +10,7 @@
     <!--A-Frame交互-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+    <!--事件触发器-->
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script> 
 </head>
 
@@ -28,6 +29,9 @@
         <a-camera><a-cursor></a-cursor></a-camera>
     </a-scene>
 
+    <!-- 添加一个元素来显示经纬度 -->
+    <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
+
     <script>
         // 获取用户当前位置
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -37,6 +41,11 @@
             // 更新图像实体位置
             var arThing= document.getElementById('arThing');
             arThing.setAttribute('gps-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+        
+            // 将经纬度显示在屏幕上
+            var coordinatesElement = document.getElementById('coordinates');
+            coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
+        
         });
     </script>
 </body>
