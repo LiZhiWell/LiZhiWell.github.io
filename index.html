@@ -26,6 +26,16 @@
         <!--创建box-->
         <a-box id="Arbox" color="blue" width="0.3" height="0.5" depth="0.5" position='1 2 3' gps-entity-place></a-box>
 
+        <!--固定位置img-->
+        <a-entity id="arImage" position='2 -2 5'>
+            <a-image src="assets\picture.png" scale="2 2 2"></a-image>
+        </a-entity>
+
+        <!--gps的img-->
+        <a-entity id="arImage01" gps-entity-place>
+            <a-image src="assets\pic_move.png" scale="2 2 2"></a-image>
+        </a-entity>
+
         <a-camera><a-cursor></a-cursor></a-camera>
     </a-scene>
 
@@ -34,17 +44,22 @@
 
     <script>
         // 获取用户当前位置
-        navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
 
             // 更新物体位置
-            var arbox = document.querySelector('#Arbox');
-            arbox.setAttribute('gps-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+            var arImg = document.querySelector('#arImage01');
+            arImg.setAttribute('gps-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
 
             // 将经纬度显示在屏幕上
             var coordinatesElement = document.getElementById('coordinates');
             coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
+
+            //打印盒子位置信息到控制台
+            var arbox = document.querySelector('#Arbox');
+            var position = arbox.getAttribute('position');
+            console.log('Box Position:', position);
         });
     </script>
 </body>
