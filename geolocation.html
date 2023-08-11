@@ -10,34 +10,12 @@
     <!--A-Frame交互-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
-    <!--事件触发器-->
-    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
-
-
-
 </head>
 
 <body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
         <a-camera gps-camera="gpsMinDistance: 5"></a-camera>
-
-        <!-- 创建指示方向的线条 -->
-        <a-entity position="0 0.1 0" line="start: -10 0 0; end: 10 0 0; color: red; linewidth: 10"
-            rotation="0 45 0"></a-entity>
-
-        <!--创建box-->
-        <a-entity material="color: blue" geometry="primitive: box" scale="1 1 1 " position="3 3 "></a-entity>
-
-        <!--固定位置img-->
-        <a-entity id="arImage" position='2 -2 5'>
-            <a-image src="assets\picture.png" scale="2 2 2"></a-image>
-        </a-entity>
-
-        <!--移动的box 人面朝负方向-->
-        <a-box position="0 1.5 0" animation="property: position; to: 0 1.5 -10; dur: 2000; easing: linear; loop: true"
-            color="tomato"></a-box>
-
     </a-scene>
 
     <!-- 添加一个元素来显示经纬度 -->
