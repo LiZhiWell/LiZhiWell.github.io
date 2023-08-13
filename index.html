@@ -30,7 +30,8 @@
             rotation="0 45 0"></a-entity>
 
         <!--创建box-->
-        <a-entity material="color: blue" geometry="primitive: box" scale="1 1 1 " gps-entity-place="latitude: 64.0663899; longitude: 118.77013;"></a-entity>
+        <a-entity material="color: blue" geometry="primitive: box" scale="1 1 1 "
+            gps-entity-place="latitude: 64.0663899; longitude: 118.77013;"></a-entity>
 
         <!--固定位置img-->
         <a-entity id="arImage" position='2 -2 5'>
@@ -45,30 +46,32 @@
             line__2="start: -2 4 5; end: 0 4 -3; color: green"></a-entity>
 
         <!--文字 手机端显示不出来？？-->
-        <a-entity  id="text" gps-new-entity-place="latitude: 64.0663899; longitude: 118.77013;">
+        <a-entity id="text" gps-new-entity-place="latitude: 64.0663899; longitude: 118.77013;">
             <a-text value="This content will always face you." look-at="[gps-camera]" scale="20 20 20"></a-text>
         </a-entity>
 
-
+        <!--相机定位-->
         <!-- <a-entity id="rig" movement-controls position="0 0 5">
             <a-entity id="camera"
                       camera
                       position="0 1.6 0"
                       look-controls="pointerLockEnabled: true"></a-entity>
-          </a-entity>
-     -->
-          <!-- Ground -->
-          <!-- <a-grid static-body></a-grid> -->
-    
-          <!-- Tubes -->
-          <a-tube path="5 1 5, 5 1 -5, -5 1 -5" radius="0.5" material="color: red; side: double"></a-tube>
-    
-          <a-tube path="5 3 -5, 2 3 2, 2 0 2" radius="0.3" material="color: blue; side: double"></a-tube>
-    
-          <a-tube path="0 0 -2, 0 2 -2, -4 2 -2, -4 0 -2" radius="0.6" normal-material></a-tube>
+          </a-entity> -->
+
+        <!--地面网格-->
+        <!-- Ground -->
+        <!-- <a-grid static-body></a-grid> -->
+
+        
+         <!-- Tubes -->
+        <a-tube path="0 0 0, 10 0 0, 10 0 5,10 10 5,10 15 12" radius="0.5" material="color: red; side: double"></a-tube>
 
     </a-scene>
 
+
+
+
+    
     <!-- 添加一个元素来显示经纬度 -->
     <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
 
