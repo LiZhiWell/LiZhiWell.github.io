@@ -1,41 +1,28 @@
 <html>
-<head>
-    <title>A-Frame Alongpath Component</title>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css"/>
-    <style>
-        html {
-            background: #0069D2;
-            color: #08C8EC;
-            font-family: monospace;
-            font-size: 20px;
-            padding: 10px 20px;
-        }
+  <head>
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,maximum-scale=1">
+    <title>Examples • Tubes</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Player -->
 
-        h1 {
-            font-weight: 300;
-        }
 
-        a {
-            color: #E1FF32;
-            display: block;
-            padding: 15px 0;
-        }
-    </style>
-</head>
-<body>
-<h1>A-Frame Alongpath Component</h1>
-<a href="basic/index.html">Alongpath Basic</a>
-<p>Objects moving around given path with alongpath</p>
-<a href="advanced/index.html">Alongpath Advanced</a>
-<p>Various Objects moving around given path with alongpath triggering events</p>
-<a href="advanced/switch-path.html">Alongpath Advanced</a>
-<p>Same object following one path after an other</p>
+      <!-- Ground -->
+      <a-grid static-body></a-grid>
 
-<div class="github-fork-ribbon-wrapper right">
-    <div class="github-fork-ribbon" style="background: #28E1A5">
-        <a href="https://github.com/protyze/aframe-alongpath-component">Fork me on GitHub</a>
-    </div>
-</div>
-</body>
+      <!-- Tubes -->
+      <a-tube path="5 1 5, 5 1 -5, -5 1 -5" radius="0.5" material="color: red; side: double"></a-tube>
+
+      <a-tube path="5 3 -5, 2 3 2, 2 0 2" radius="0.3" material="color: blue; side: double"></a-tube>
+
+      <a-tube path="0 0 -2, 0 2 -2, -4 2 -2, -4 0 -2" radius="0.6" normal-material></a-tube>
+
+      
+
+    </a-scene>
+  </body>
 </html>
