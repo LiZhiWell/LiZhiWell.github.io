@@ -1,25 +1,41 @@
+<html>
 <head>
-    <title>My A-Frame Scene</title>
-    <script src="build.js"></script>
-    <!--基于地理位置的AR渲染-->
-    <script type='text/javascript'
-        src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-    <!--A-Frame交互-->
-    <script type='text/javascript'
-        src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
-  </head>
-  
-  <body>
-    <a-scene  vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-    renderer='antialias: true; alpha: true'>
-      <a-curve id="track1">
-        <a-curve-point position="-2 2 -3"></a-curve-point>
-        <a-curve-point position="0 1 -3"></a-curve-point>
-        <a-curve-point position="2 2 -3"></a-curve-point>
-      </a-curve>
-      
-      <a-box material="color:red" alongpath="curve: #track1"></a-box>
+    <title>A-Frame Alongpath Component</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css"/>
+    <style>
+        html {
+            background: #0069D2;
+            color: #08C8EC;
+            font-family: monospace;
+            font-size: 20px;
+            padding: 10px 20px;
+        }
 
-      <a-entity camera></a-entity>
-    </a-scene>
-  </body>
+        h1 {
+            font-weight: 300;
+        }
+
+        a {
+            color: #E1FF32;
+            display: block;
+            padding: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>A-Frame Alongpath Component</h1>
+<a href="basic/index.html">Alongpath Basic</a>
+<p>Objects moving around given path with alongpath</p>
+<a href="advanced/index.html">Alongpath Advanced</a>
+<p>Various Objects moving around given path with alongpath triggering events</p>
+<a href="advanced/switch-path.html">Alongpath Advanced</a>
+<p>Same object following one path after an other</p>
+
+<div class="github-fork-ribbon-wrapper right">
+    <div class="github-fork-ribbon" style="background: #28E1A5">
+        <a href="https://github.com/protyze/aframe-alongpath-component">Fork me on GitHub</a>
+    </div>
+</div>
+</body>
+</html>

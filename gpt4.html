@@ -3,7 +3,8 @@
 
 <head>
     <title>AR.js A-Frame Direction Indicator</title>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="../build.js"></script>\
+    <!-- <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script> //这个与build.js冲突 -->
     <!--基于地理位置的AR渲染-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
@@ -12,22 +13,51 @@
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
     <!--事件触发器-->
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+    <!--看向-->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>l
 
 
 
 </head>
 
 <body>
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-        renderer='antialias: true; alpha: true'>
+    <!--a-scene属性修改(不然与build.js冲突)-->
+    <a-scene inspector="url: https://rawgit.com/aframevr/aframe-inspector/master/dist/aframe-inspector.min.js">
         <a-camera gps-camera="gpsMinDistance: 5"></a-camera>
+
+
+        <!--轨迹节点-->
+        <a-curve id="track1">
+            <a-curve-point position="-2 2 -3" geometry="primitive:box; height:0.1; width:0.1; depth:0.1"
+                material="color:#ff0000"></a-curve-point>
+            <a-curve-point position="0 -1 -8" geometry="primitive:box; height:0.1; width:0.1; depth:0.1"
+                material="color:#ff0000"></a-curve-point>
+            <a-curve-point position="2 2 -3" geometry="primitive:box; height:0.1; width:0.1; depth:0.1"
+                material="color:#ff0000"></a-curve-point>
+        </a-curve>
+
+        <!--移动物体-->
+        <a-box color="blue" width="0.1" height="0.3" depth="0.1"
+            alongpath="curve: #track1; loop:true; dur:6000; rotate:true;">
+        </a-box>
+        <!--轨迹画线-->
+        <a-draw-curve curveref="#track1" material="shader: line; color: green;"></a-draw-curve>
+
+
+        <!--创建相机和实体，内含相机与光标，供交互-->
+        <a-entity id="player" position="0 0 0">
+            <a-camera>
+                <a-cursor></a-cursor>
+            </a-camera>
+        </a-entity>
 
         <!-- 创建指示方向的线条 -->
         <a-entity position="0 0.1 0" line="start: -10 0 0; end: 10 0 0; color: red; linewidth: 10"
             rotation="0 45 0"></a-entity>
 
         <!--创建box-->
-        <a-entity material="color: blue" geometry="primitive: box" scale="1 1 1 " position="3 3 "></a-entity>
+        <a-entity material="color: blue" geometry="primitive: box" scale="1 1 1 "
+            gps-entity-place="latitude: 64.0663899; longitude: 118.77013;"></a-entity>
 
         <!--固定位置img-->
         <a-entity id="arImage" position='2 -2 5'>
@@ -35,11 +65,13 @@
         </a-entity>
 
         <!--移动的box 人面朝负方向-->
-        <a-box position="0 1.5 0" animation="property: position; to: 0 1.5 -10; dur: 2000; easing: linear; loop: true"
-            color="tomato"></a-box>
+        <!-- <a-box position="0 1.5 0" animation="property: position; to: 0 1.5 -10; dur: 2000; easing: linear; loop: true"
+            color="tomato"></a-box> -->
 
         <a-entity line="start: 0 1 0; end: 2 0 -5; color: red"
             line__2="start: -2 4 5; end: 0 4 -3; color: green"></a-entity>
+
+
 
     </a-scene>
 
