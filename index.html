@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <title>GeoAR.js demo</title>
-    <!--aframe必要库-->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <!--控制物件朝向 非必要-->
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <!--地理位置渲染库-->
+    <title>AR.js A-Frame 生成粗线tube</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!--基于地理位置的AR渲染-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-    <!--ar.js必要库-->
-        <script type='text/javascript'
+    <!--A-Frame与ar.js-->
+    <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+    <!--物体面向-->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <!--提供更多组件的包-->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+
 </head>
 
-<body style='margin: 0; overflow: hidden;'>
+<body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
-        
-        <!--设置gps相机的虚拟经纬度信息-->
-        <a-camera gps-new-camera='simulateLatitude: 51.049; simulateLongitude: -0.723' rotation-reader></a-camera>
+        <!--该例中可不采取gps-camera 普通相机自动添加-->
+        <!-- <a-camera gps-camera rotation-reader> </a-camera> -->
 
-        <!--物体也设置相应经纬度-->
-        <a-text value="This will always face the user." look-at="[gps-camera]" scale="75 75 75" gps-new-entity-place="latitude: 51.0491; longitude: -0.723;"></a-text>
-        <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3" gps-new-entity-place="latitude: 51.0492; longitude: -0.7232;"></a-box>
+        <!-- 创建指示方向的线条 -->
+        <a-entity id="line1" position="0 0.1 0" line="start: -10 0 0; end: 10 0 0; color: red; linewidth: 10"
+            rotation="0 45 0"></a-entity>
+
+        <a-entity line="start: 0 1 0; end: 2 0 -5; color: green"></a-entity>
+ 
+         <!-- Tubes -->
+        <a-tube path="0 0 0, 5 0 0, 10 0 5,15 0 10,20 0 10,25 0 -5,15 0 -10" radius="0.5" material="color: red; side: double"></a-tube>
 
     </a-scene>
+    
+    <!-- 添加一个元素来显示经纬度 -->
+    <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
+
+    <script>
+        // 获取用户当前位置
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // 将经纬度显示在屏幕上
+            var coordinatesElement = document.getElementById('coordinates');
+            coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
+        });
+    </script>
 </body>
+
+</html>
