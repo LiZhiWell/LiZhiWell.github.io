@@ -1,30 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <title>GeoAR.js demo</title>
-    <!--aframe必要库-->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <!--控制物件朝向 非必要-->
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <!--地理位置渲染库-->
+    <title>AR.js A-Frame Location-based</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-    <!--ar.js必要库-->
-        <script type='text/javascript'
+    <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
 </head>
 
-<body style='margin: 0; overflow: hidden;'>
+<body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
-        
-        <!--设置gps相机的虚拟经纬度信息-->
-        <a-camera gps-camera='simulateLatitude: 51.049; simulateLongitude: -0.723' rotation-reader></a-camera>
+        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
 
-        <!--物体也设置相应经纬度-->
-        <a-text value="This will always face the user." look-at="[gps-camera]" scale="75 75 75" gps-entity-place="latitude: 51.0491; longitude: -0.723;"></a-text>
-        <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3" gps-entity-place="latitude: 51.0492; longitude: -0.7232;"></a-box>
+        <!-- 红色盒子保持相对于相机的位置不变 -->
+        <a-entity id='redgps' material='color: red' geometry='primitive: box' scale="10 10 10"
+            ></a-entity>
 
+        <!-- 蓝色盒子保持相对于相机的位置不变 -->
+        <a-entity id='blue0' material='color: blue' geometry='primitive: box' scale="10 10 10"
+            ></a-entity>
+
+        <a-entity geometry='primitive : sphere' scale="5 5 5" material='color:green' gps-new-entity-place='latitude:28.12834;longitude: 112.9432074' ></a-entity>
     </a-scene>
+
+    <!-- 添加一个元素来显示经纬度 -->
+    <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
+    <script>
+        // 获取用户当前位置
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // 将经纬度显示在屏幕上
+            var coordinatesElement = document.getElementById('coordinates');
+            coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
+
+            // 设置红色盒子的位置为获取到的经纬度
+            var redEntity = document.querySelector('#redgps');
+            redEntity.setAttribute('gps-new-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+
+            // 设置蓝色盒子的位置为获取到的经纬度，但偏移一些距离
+            var offset = 0.0001; // 调整偏移量，可以根据需要调整
+            var blueLatitude = latitude + offset;
+            var blueLongitude = longitude + offset;
+            var blueEntity = document.querySelector('#blue0');
+            blueEntity.setAttribute('gps-new-entity-place', 'latitude: ' + blueLatitude + '; longitude: ' + blueLongitude);
+        });
+    </script>
 </body>
+
+</html>
