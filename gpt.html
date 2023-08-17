@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR.js Demo</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script type='text/javascript'
+        src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    <script type='text/javascript'
+        src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+</head>
+<body style='margin: 0; overflow: hidden;'>
+    <a-scene vr-mode-ui='enabled: false'
+             arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+             renderer='antialias: true; alpha: true'>
+        <!-- 设置相机的虚拟经纬度 -->
+        <a-camera gps-camera='simulateLatitude: 60.00; simulateLongitude: 120.00'></a-camera>
+
+        <!-- 设置初始物体位置，相对于相机 -->
+        <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3"
+               position="0 0 -5"></a-box>
+
+        <script>
+            var camera = document.querySelector('a-camera');
+            var box = document.querySelector('#box');
+
+            // 获取初始相机的虚拟经纬度
+            var initialLatitude = camera.getAttribute('gps-camera').latitude;
+            var initialLongitude = camera.getAttribute('gps-camera').longitude;
+
+            // 监听相机位置的变化
+            camera.addEventListener('gps-camera-update', function (event) {
+                // 计算相机的位置变化
+                var deltaLatitude = event.detail.latitude - initialLatitude;
+                var deltaLongitude = event.detail.longitude - initialLongitude;
+
+                // 应用位置变化到物体
+                box.object3D.position.set(box.object3D.position.x + deltaLongitude * 100000,
+                                          box.object3D.position.y,
+                                          box.object3D.position.z - deltaLatitude * 100000);
+            });
+        </script>
+    </a-scene>
+</body>
+</html>
