@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>GeoAR.js demo</title>
+    <title>控制物体经纬度+高度(此处物体处于正上方)</title>
     <!--aframe必要库-->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <!--控制物件朝向 非必要-->
@@ -22,9 +22,19 @@
         <!--设置gps相机的虚拟经纬度信息-->
         <a-camera gps-new-camera='simulateLatitude: 51.049; simulateLongitude: -0.723' rotation-reader></a-camera>
 
-        <!--物体也设置相应经纬度-->
-        <a-text value="This will always face the user." look-at="[gps-camera]" scale="75 75 75" gps-new-entity-place="latitude: 51.0491; longitude: -0.723;"></a-text>
-        <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3" gps-new-entity-place="latitude: 51.0492; longitude: -0.7232;"></a-box>
+        <!--物体也设置相应经纬度 position可更改y轴高度-->
+        <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3" gps-new-entity-place="latitude: 51.0492; longitude: -0.7232;" position="0 10 0"></a-box>
 
+        <script>
+            // 获取用户当前位置
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+    
+                // 将经纬度显示在屏幕上
+                var coordinatesElement = document.getElementById('box');
+                coordinatesElement.setAttribute('gps-new-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+            });
+        </script>
     </a-scene>
 </body>
