@@ -20,7 +20,8 @@
 <body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+        <!--降低gps震动-->
+        <a-camera id='camera1' look-controls-enabled='false' arjs-device-orientation-controls='smoothingFactor: 0.1' gps-new-camera='gpsMinDistance: 5'> </a-camera>
 
          <!-- Tubes -->
         <a-tube id="tube" path="0 0 0, 100 0 0, 100 0 100,200 0 100,200 0 300,300 0 350,400 0 250" radius="0.5" material="color: red; side: double" ></a-tube>
