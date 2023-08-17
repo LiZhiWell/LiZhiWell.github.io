@@ -20,23 +20,19 @@
 <body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
-        <!--该例中可不采取gps-camera-->
-        <a-camera gps-camera rotation-reader> </a-camera>
+        <!--该例中可不采取gps-camera 普通相机自动添加-->
+        <!-- <a-camera gps-camera rotation-reader> </a-camera> -->
 
         <!-- 创建指示方向的线条 -->
         <a-entity id="line1" position="0 0.1 0" line="start: -10 0 0; end: 10 0 0; color: red; linewidth: 10"
             rotation="0 45 0"></a-entity>
 
-        <a-entity line="start: 0 1 0; end: 2 0 -5; color: red"
-            line__2="start: -2 4 5; end: 0 4 -3; color: green"></a-entity>
-
+        <a-entity line="start: 0 1 0; end: 2 0 -5; color: green"></a-entity>
  
          <!-- Tubes -->
         <a-tube path="0 0 0, 5 0 0, 10 0 5,15 0 10,20 0 10,25 0 -5,15 0 -10" radius="0.5" material="color: red; side: double"></a-tube>
 
     </a-scene>
-
-
     
     <!-- 添加一个元素来显示经纬度 -->
     <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
