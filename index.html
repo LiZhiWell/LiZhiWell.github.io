@@ -3,20 +3,26 @@
 <head>
     <meta charset='utf-8'>
     <title>GeoAR.js demo</title>
+    <!--aframe必要库-->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <!--控制物件朝向 非必要-->
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <!-- <script type='text/javascript' src='aframe-ar-nft.js'></script> -->
+    <!--地理位置渲染库-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-    <script type='text/javascript'
+    <!--ar.js必要库-->
+        <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
+        
+        <!--设置gps相机的虚拟经纬度信息-->
         <a-camera gps-camera='simulateLatitude: 51.049; simulateLongitude: -0.723' rotation-reader></a-camera>
 
+        <!--物体也设置相应经纬度-->
         <a-text value="This will always face the user." look-at="[gps-camera]" scale="75 75 75" gps-entity-place="latitude: 51.0491; longitude: -0.723;"></a-text>
         <a-box id="box" material='color:blue' geometry="primitive:box" scale="3 3 3" gps-entity-place="latitude: 51.0492; longitude: -0.7232;"></a-box>
 
