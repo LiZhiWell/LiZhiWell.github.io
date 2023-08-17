@@ -15,13 +15,13 @@
         renderer='antialias: true; alpha: true'>
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
 
-        <a-entity id='redgps' material='color: red' geometry='primitive: box' scale="10 10 10"
+        <a-entity id='redgps' material='color: red' geometry='primitive: box' scale="3 3 3"
             ></a-entity>
 
         <a-entity id='blue0' material='color: blue' geometry='primitive: box' scale="10 10 10"
             ></a-entity>
 
-        <a-entity geometry='primitive : sphere' scale="5 5 5" material='color:green' gps-new-entity-place='latitude:28.12834;longitude: 112.9432074' ></a-entity>
+        <a-entity geometry='primitive : sphere' scale="5 5 5" material='color:green' gps-new-entity-place='latitude:28.129;longitude: 112.944' ></a-entity>
     </a-scene>
 
     <!-- 添加一个元素来显示经纬度 -->
@@ -36,9 +36,12 @@
             var coordinatesElement = document.getElementById('coordinates');
             coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
 
-            // 设置红色盒子的位置为获取到的经纬度
+            // 设置红色盒子的位置为获取到的经纬度(位置重叠，所以常不显示)
+            var offset=0.0001;
+            var redLatitude = latitude - offset;
+            var redLongitude = longitude - offset;
             var redEntity = document.querySelector('#redgps');
-            redEntity.setAttribute('gps-new-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+            redEntity.setAttribute('gps-new-entity-place', 'latitude: ' + redLatitude + '; longitude: ' + redLongitude);
 
             // 设置蓝色盒子的位置为获取到的经纬度，但偏移一些距离
             var offset = 0.0001; // 调整偏移量，可以根据需要调整
