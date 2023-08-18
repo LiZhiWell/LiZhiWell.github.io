@@ -33,16 +33,16 @@
 
     <script>
         // 获取用户当前位置
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
+            navigator.geolocation.getCurrentPosition(function (position) {
+            var latitude = (position.coords.latitude)*1000000000;
+            var longitude = (position.coords.longitude)*1000000000;
 
             // 将经纬度显示在屏幕上
             var coordinatesElement = document.getElementById('coordinates');
-            coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
+            coordinatesElement.textContent = 'Latitude: ' + latitude/1000000000 + ', Longitude: ' + longitude/1000000000;
 
             var tube = document.querySelector('#tube');
-            tube.setAttribute('gps-new-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
+            tube.setAttribute('gps-new-entity-place', 'latitude: ' + latitude/1000000000 + '; longitude: ' + longitude/1000000000);
 
         });
     </script>
