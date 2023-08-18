@@ -2,30 +2,35 @@
 <html>
 
 <head>
-    <title>获取浏览器经纬度传入物体+远程测试</title>
+    <title>tube画线+gps赋值经纬度</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!--基于地理位置的AR渲染-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    <!--A-Frame与ar.js-->
     <script type='text/javascript'
         src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+    <!--物体面向-->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <!--提供更多组件的包 如tube-->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+
 </head>
 
 <body>
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+        <!--降低gps震动-->
+        <a-camera id='camera1' look-controls-enabled='false' arjs-device-orientation-controls='smoothingFactor: 0.1' gps-new-camera='gpsMinDistance: 5'> </a-camera>
 
-        <a-entity id='redgps' material='color: red' geometry='primitive: box' scale="3 3 3"
-            ></a-entity>
+         <!-- Tubes -->
+        <a-tube id="tube" path="0 0 0, 100 0 0, 100 0 100,200 0 100,200 0 300,300 0 350,400 0 250" radius="0.5" material="color: red; side: double" position="0 -10 0"></a-tube>
 
-        <a-entity id='blue0' material='color: blue' geometry='primitive: box' scale="10 10 10"
-            ></a-entity>
-
-        <a-entity geometry='primitive : sphere' scale="5 5 5" material='color:green' gps-new-entity-place='latitude:28.129;longitude: 112.944' ></a-entity>
     </a-scene>
-
+    
     <!-- 添加一个元素来显示经纬度 -->
     <div id="coordinates" style="position: absolute; top: 10px; left: 10px; background: white; padding: 5px;"></div>
+
     <script>
         // 获取用户当前位置
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -36,19 +41,9 @@
             var coordinatesElement = document.getElementById('coordinates');
             coordinatesElement.textContent = 'Latitude: ' + latitude + ', Longitude: ' + longitude;
 
-            // 设置红色盒子的位置为获取到的经纬度(位置重叠，所以常不显示)
-            var offset=0.0001;
-            var redLatitude = latitude - offset;
-            var redLongitude = longitude - offset;
-            var redEntity = document.querySelector('#redgps');
-            redEntity.setAttribute('gps-new-entity-place', 'latitude: ' + redLatitude + '; longitude: ' + redLongitude);
+            var tube = document.querySelector('#tube');
+            tube.setAttribute('gps-new-entity-place', 'latitude: ' + latitude + '; longitude: ' + longitude);
 
-            // 设置蓝色盒子的位置为获取到的经纬度，但偏移一些距离
-            var offset = 0.0001; // 调整偏移量，可以根据需要调整
-            var blueLatitude = latitude + offset;
-            var blueLongitude = longitude + offset;
-            var blueEntity = document.querySelector('#blue0');
-            blueEntity.setAttribute('gps-new-entity-place', 'latitude: ' + blueLatitude + '; longitude: ' + blueLongitude);
         });
     </script>
 </body>
