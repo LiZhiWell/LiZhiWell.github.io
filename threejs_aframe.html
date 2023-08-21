@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>A-Frame + Three.js</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+
+<body>
+    <a-scene vr-mode-ui='enabled: false'>
+        <!-- 在 A-Frame 场景中添加实体 -->
+        <a-box color="red" position="-1 0.5 -3"></a-box>
+        <a-sphere color="blue" position="1 0.5 -3"></a-sphere>
+        <a-camera></a-camera>
+
+        <a-entity my-threejs-scene></a-entity>
+    </a-scene>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        AFRAME.registerComponent('my-threejs-scene', {
+            init: function () {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+
+                const geometry = new THREE.BoxGeometry();
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+
+                camera.position.z = 5;
+
+                // 渲染循环
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+            }
+        });
+    </script>
+</body>
+
+</html>
