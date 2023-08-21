@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Hello, AR Cube!</title>
     <!-- include three.js library -->
-    <script src='js/three.js'></script>
+    <script type="module" src="https://unpkg.com/three@0.140.0/build/three.module.js"></script>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -13,25 +14,25 @@
     <script src="threex/threex-artoolkitcontext.js"></script>
     <script src="threex/threex-arbasecontrols.js"></script>
     <script src="threex/threex-armarkercontrols.js"></script>
-
-    
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.140.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.140.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 
-    <!-- 
-  Example created by Lee Stemkoski: https://github.com/stemkoski
-  Based on the AR.js library and examples created by Jerome Etienne: https://github.com/jeromeetienne/AR.js/
--->
-
-    <script>
+    <script type="module">
+        import * as THREE from 'three';
 
         var scene, camera, renderer, clock, deltaTime, totalTime;
-
         var arToolkitSource, arToolkitContext;
-
         var markerRoot1, markerRoot2;
-
         var mesh1;
 
         initialize();
@@ -39,14 +40,10 @@
 
         function initialize() {
             scene = new THREE.Scene();
-
-            //增加环境光
             let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
             scene.add(ambientLight);
-
             camera = new THREE.Camera();
             scene.add(camera);
-
             renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 alpha: true
@@ -57,22 +54,14 @@
             renderer.domElement.style.top = '0px'
             renderer.domElement.style.left = '0px'
             document.body.appendChild(renderer.domElement);
-
-            //创造时钟计算时间
             clock = new THREE.Clock();
             deltaTime = 0;
             totalTime = 0;
 
-            ////////////////////////////////////////////////////////////
-            // setup arToolkitSource
-            ////////////////////////////////////////////////////////////
-
-            // 设置 AR 工具包的输入源
             arToolkitSource = new THREEx.ArToolkitSource({
                 sourceType: 'webcam',
             });
 
-            // 定义窗口大小调整函数，确保 AR 工具包适应窗口尺寸
             function onResize() {
                 arToolkitSource.onResize()
                 arToolkitSource.copySizeTo(renderer.domElement)
@@ -81,48 +70,30 @@
                 }
             }
 
-
-            //初始化输入源，窗口大小实时更新
             arToolkitSource.init(function onReady() {
                 onResize()
             });
 
-            //
-            // handle resize event
             window.addEventListener('resize', function () {
                 onResize()
             });
 
-            ////////////////////////////////////////////////////////////
-            // setup arToolkitContext
-            ////////////////////////////////////////////////////////////	
-
-            // create atToolkitContext
             arToolkitContext = new THREEx.ArToolkitContext({
                 cameraParametersUrl: 'data/camera_para.dat',
                 detectionMode: 'mono'
             });
 
-            // copy projection matrix to camera when initialization complete
-            //三维物体投影到二维屏幕上
             arToolkitContext.init(function onCompleted() {
                 camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
             });
 
-            ////////////////////////////////////////////////////////////
-            // setup markerRoots
-            ////////////////////////////////////////////////////////////
-
-            // build markerControls
-            // marker识别
             markerRoot1 = new THREE.Group();
             scene.add(markerRoot1);
             let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-                type: 'pattern', patternUrl: "data/hiro.patt",
+                type: 'pattern',
+                patternUrl: "data/hiro.patt",
             })
 
-
-            //图像生成（建立一个立方体模型）
             let geometry1 = new THREE.SphereGeometry(1, 32, 16);
             let material1 = new THREE.MeshNormalMaterial({
                 transparent: true,
@@ -132,23 +103,49 @@
 
             mesh1 = new THREE.Mesh(geometry1, material1);
             mesh1.position.y = 0.5;
+            markerRoot1.add(mesh1);  // Add the mesh to markerRoot1
 
-            markerRoot1.add(mesh1);
+            // Add the customPosition, positions, and colors arrays here
+            const customPosition = [
+                new THREE.Vector3(-5, 0, 0),
+                new THREE.Vector3(0, 0, 0),
+                new THREE.Vector3(0, 5, 0),
+                new THREE.Vector3(5, 5, 0),
+                new THREE.Vector3(0, 0, 10),
+                new THREE.Vector3(5, 0, 10),
+            ];
+
+            const matLine = new LineMaterial({
+                color: 0xffffff,
+                linewidth: 1,
+                worldUnits: true,
+                vertexColors: true,
+            });
+
+            const positions = [];
+            const colors = [];
+
+            const spline = new THREE.CatmullRomCurve3(customPosition);
+            const divisions = Math.round(3 * customPosition.length);
+            const point = new THREE.Vector3();
+            const color = new THREE.Color();
+
+            for (let i = 0, l = divisions; i < l; i++) {
+                const t = i / l;
+                spline.getPoint(t, point);
+                positions.push(point.x, point.y, point.z);
+                color.setHSL(t, 1.0, 0.5, THREE.SRGBColorSpace);
+                colors.push(color.r, color.g, color.b);
+            }
+
+            const lineGeometry = new LineGeometry();
+            lineGeometry.setPositions(positions);
+            lineGeometry.setColors(colors);
+            let newline = new Line2(lineGeometry, matLine);
+            newline.scale.set(1, 1, 1);
+            markerRoot1.add(newline);  // Add the line to the marker root
         }
 
-        //每帧更新AR工具包
-        function update() {
-            // update artoolkit on every frame
-            if (arToolkitSource.ready !== false)
-                arToolkitContext.update(arToolkitSource.domElement);
-        }
-
-        // 渲染函数，将场景渲染到画布上
-        function render() {
-            renderer.render(scene, camera);
-        }
-
-        // 动画函数，使用 requestAnimationFrame 在每一帧调用更新和渲染函数
         function animate() {
             requestAnimationFrame(animate);
             deltaTime = clock.getDelta();
@@ -157,8 +154,15 @@
             render();
         }
 
-    </script>
+        function update() {
+            if (arToolkitSource.ready !== false)
+                arToolkitContext.update(arToolkitSource.domElement);
+        }
 
+        function render() {
+            renderer.render(scene, camera);
+        }
+    </script>
 </body>
 
 </html>
